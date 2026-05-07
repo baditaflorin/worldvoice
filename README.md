@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+![Deployment](https://img.shields.io/badge/deployment-GitHub%20Pages-2ea44f)
+![Mode](https://img.shields.io/badge/mode-static%20client--side-48d6c1)
+![License](https://img.shields.io/badge/license-MIT-f4c95d)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# WorldVoice
 
-Currently, two official plugins are available:
+Live site:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+https://baditaflorin.github.io/worldvoice/
 
-## React Compiler
+WorldVoice is a browser-native live audio transformer that turns microphone input into instruments, choirs, and impossible spaces without uploading audio.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![WorldVoice screenshot](https://raw.githubusercontent.com/baditaflorin/worldvoice/main/docs/demo-screenshot.png)
 
-## Expanding the ESLint configuration
+## What Works
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Real-time Web Audio pitch following and harmonic resynthesis.
+- Violin, choir, sax, and dream-space performance presets.
+- Generated impossible-space convolution reverb.
+- Adaptive filtering, compression, delay, and animated live visualization.
+- Lazy RNNoise WASM, ONNX Runtime Web, and Tone.js capability probes.
+- Static model-pack manifest for future DDSP/RAVE/ONNX weights.
+- IndexedDB settings persistence, PWA manifest, and service worker.
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+## Current Model Boundary
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The v1 live chain is WebAudio-first and ships audited fallbacks. True DDSP/RAVE model weights are not bundled because available browser DDSP npm paths brought high and critical audit findings during implementation. The app includes adapter slots and static manifest metadata so audited ONNX packs can be added later without changing the GitHub Pages deployment mode.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+Reference research and docs:
+
+https://magenta.github.io/magenta-js/music/demos/ddsp_tone_transfer.html
+
+https://github.com/magenta/ddsp
+
+https://arxiv.org/abs/2111.05011
+
+https://www.npmjs.com/package/%40shiguredo%2Frnnoise-wasm
+
+https://onnxruntime.ai/docs/tutorials/web/
+
+## Quickstart
+
+```bash
+git clone https://github.com/baditaflorin/worldvoice.git
+cd worldvoice
+npm install
+make install-hooks
+make dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Checks
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+```bash
+make lint
+make test
+make smoke
+make build
+```
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## Architecture
+
+```mermaid
+flowchart LR
+  User["User microphone"] --> Browser["Browser app on GitHub Pages"]
+  Browser --> Audio["Web Audio engine"]
+  Browser --> Cache["IndexedDB settings"]
+  Browser --> Manifest["Static model manifest"]
+  Audio --> Pitch["Pitch follower"]
+  Pitch --> Synth["Harmonic resynthesis"]
+  Synth --> Space["Generated reverb and sculptor"]
+  Space --> Headphones["Headphones"]
+  Browser -. lazy .-> WASM["RNNoise WASM probe"]
+  Browser -. lazy .-> ONNX["ONNX Runtime Web probe"]
+```
+
+More architecture detail:
+
+docs/architecture.md
+
+ADR index:
+
+docs/adr/
+
+Deployment guide:
+
+docs/deploy.md
+
+Privacy:
+
+docs/privacy.md
+
+## Repository Shape
+
+- `src/features/audio/`: audio engine, pitch tracking, presets, model manifest validation, storage.
+- `src/components/`: reusable interface components.
+- `public/models/manifest.json`: static model-pack contract.
+- `docs/`: GitHub Pages output plus authored documentation.
+- `.githooks/`: local hooks, installed by `make install-hooks`.
+
+## Release
+
+```bash
+make lint
+make test
+make smoke
+make build
+make release VERSION=v0.1.0
+git push origin main --tags
 ```
