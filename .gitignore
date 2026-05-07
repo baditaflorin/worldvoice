@@ -10,7 +10,28 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+coverage
+tmp
+test-results
+playwright-report
+.env
+.env.*
+!.env.example
 *.local
+*.pem
+*.key
+
+# Go
+bin/
+*.test
+*.out
+
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.pyc
 
 # Editor directories and files
 .vscode/*

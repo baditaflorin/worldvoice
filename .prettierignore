@@ -1,0 +1,10 @@
+docs/assets/
+docs/index.html
+docs/404.html
+docs/favicon.svg
+docs/icons.svg
+docs/manifest.webmanifest
+docs/models/
+docs/sw.js
+node_modules/
+package-lock.json

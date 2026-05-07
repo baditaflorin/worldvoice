@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import type { CSSProperties } from 'react'
+import { useQuery } from "@tanstack/react-query";
+import type { CSSProperties } from "react";
 import {
   AudioLines,
   BatteryMedium,
@@ -11,34 +11,35 @@ import {
   Sparkles,
   Volume2,
   Waves,
-} from 'lucide-react'
-import { MeterCanvas } from './components/MeterCanvas'
-import { fetchModelManifest } from './features/audio/modelManifest'
-import { PRESETS, type PresetId } from './features/audio/presets'
-import { useWorldVoice } from './features/audio/useWorldVoice'
+} from "lucide-react";
+import { MeterCanvas } from "./components/MeterCanvas";
+import { fetchModelManifest } from "./features/audio/modelManifest";
+import { PRESETS, type PresetId } from "./features/audio/presets";
+import { useWorldVoice } from "./features/audio/useWorldVoice";
 
 const presetIcons: Record<PresetId, typeof Music2> = {
   violin: Music2,
   choir: AudioLines,
   sax: Volume2,
   dream: Sparkles,
-}
+};
 
 function App() {
-  const { metrics, settings, running, setSettings, start, stop } = useWorldVoice()
+  const { metrics, settings, running, setSettings, start, stop } =
+    useWorldVoice();
   const manifest = useQuery({
-    queryKey: ['model-manifest', import.meta.env.BASE_URL],
+    queryKey: ["model-manifest", import.meta.env.BASE_URL],
     queryFn: () => fetchModelManifest(import.meta.env.BASE_URL),
     staleTime: 1000 * 60 * 30,
-  })
+  });
 
   const handlePower = async () => {
     if (running) {
-      await stop()
+      await stop();
     } else {
-      await start()
+      await start();
     }
-  }
+  };
 
   return (
     <main className="app-shell">
@@ -58,16 +59,20 @@ function App() {
           className="power-button"
           onClick={handlePower}
           aria-pressed={running}
-          title={running ? 'Stop live audio' : 'Start live audio'}
+          title={running ? "Stop live audio" : "Start live audio"}
         >
           {running ? <CircleStop size={22} /> : <Play size={22} />}
-          <span>{running ? 'Stop' : 'Start'}</span>
+          <span>{running ? "Stop" : "Start"}</span>
         </button>
 
-        <div className="segmented" role="tablist" aria-label="Transformation preset">
+        <div
+          className="segmented"
+          role="tablist"
+          aria-label="Transformation preset"
+        >
           {PRESETS.map((preset) => {
-            const Icon = presetIcons[preset.id]
-            const active = settings.presetId === preset.id
+            const Icon = presetIcons[preset.id];
+            const active = settings.presetId === preset.id;
 
             return (
               <button
@@ -75,15 +80,15 @@ function App() {
                 type="button"
                 role="tab"
                 aria-selected={active}
-                className={active ? 'segment active' : 'segment'}
+                className={active ? "segment active" : "segment"}
                 onClick={() => setSettings({ presetId: preset.id })}
-                style={{ '--accent': preset.accent } as CSSProperties}
+                style={{ "--accent": preset.accent } as CSSProperties}
                 title={preset.label}
               >
                 <Icon size={18} />
                 <span>{preset.label}</span>
               </button>
-            )
+            );
           })}
         </div>
 
@@ -95,7 +100,9 @@ function App() {
             max="1"
             step="0.01"
             value={settings.intensity}
-            onChange={(event) => setSettings({ intensity: event.currentTarget.valueAsNumber })}
+            onChange={(event) =>
+              setSettings({ intensity: event.currentTarget.valueAsNumber })
+            }
           />
         </label>
 
@@ -107,7 +114,9 @@ function App() {
             max="1"
             step="0.01"
             value={settings.space}
-            onChange={(event) => setSettings({ space: event.currentTarget.valueAsNumber })}
+            onChange={(event) =>
+              setSettings({ space: event.currentTarget.valueAsNumber })
+            }
           />
         </label>
 
@@ -119,7 +128,9 @@ function App() {
             max="1"
             step="0.01"
             value={settings.color}
-            onChange={(event) => setSettings({ color: event.currentTarget.valueAsNumber })}
+            onChange={(event) =>
+              setSettings({ color: event.currentTarget.valueAsNumber })
+            }
           />
         </label>
 
@@ -127,7 +138,9 @@ function App() {
           <input
             type="checkbox"
             checked={settings.batterySaver}
-            onChange={(event) => setSettings({ batterySaver: event.currentTarget.checked })}
+            onChange={(event) =>
+              setSettings({ batterySaver: event.currentTarget.checked })
+            }
           />
           <BatteryMedium size={18} />
           <span>Battery saver</span>
@@ -139,7 +152,11 @@ function App() {
         <div className="stage-readout">
           <div>
             <span className="readout-label">Pitch</span>
-            <strong>{metrics.pitchHz ? `${Math.round(metrics.pitchHz)} Hz` : metrics.note}</strong>
+            <strong>
+              {metrics.pitchHz
+                ? `${Math.round(metrics.pitchHz)} Hz`
+                : metrics.note}
+            </strong>
           </div>
           <div>
             <span className="readout-label">Level</span>
@@ -147,7 +164,9 @@ function App() {
           </div>
           <div>
             <span className="readout-label">Latency</span>
-            <strong>{metrics.latencyMs ? `${metrics.latencyMs} ms` : 'Standby'}</strong>
+            <strong>
+              {metrics.latencyMs ? `${metrics.latencyMs} ms` : "Standby"}
+            </strong>
           </div>
         </div>
       </section>
@@ -195,11 +214,13 @@ function App() {
               <em>{pack.status}</em>
             </div>
           ))}
-          {manifest.isError ? <p className="inline-error">Manifest fallback active</p> : null}
+          {manifest.isError ? (
+            <p className="inline-error">Manifest fallback active</p>
+          ) : null}
         </div>
       </section>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
