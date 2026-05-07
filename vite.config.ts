@@ -21,7 +21,7 @@ export default defineConfig({
   base: '/worldvoice/',
   build: {
     outDir: 'docs',
-    emptyOutDir: true,
+    emptyOutDir: false,
     sourcemap: true,
     rollupOptions: {
       output: {
