@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "packs": [
+    {
+      "id": "rnnoise-wasm",
+      "kind": "rnnoise",
+      "label": "RNNoise WASM",
+      "description": "Optional WASM denoiser capability probe for future frame-level cleanup.",
+      "sizeMb": 4.85,
+      "runtime": "WASM",
+      "status": "adapter-ready",
+      "fallback": "WebAudio high-pass, compression, and gate"
+    },
+    {
+      "id": "ddsp-violin",
+      "kind": "ddsp",
+      "label": "DDSP Violin",
+      "description": "Hosted Magenta checkpoint reference for a future audited DDSP adapter.",
+      "sizeMb": 3.9,
+      "runtime": "TensorFlow.js checkpoint",
+      "status": "external-checkpoint",
+      "url": "https://storage.googleapis.com/magentadata/js/checkpoints/ddsp/violin",
+      "fallback": "Harmonic WebAudio violin resynthesis"
+    },
+    {
+      "id": "rave-choir",
+      "kind": "rave",
+      "label": "RAVE Choir Slot",
+      "description": "Bring-your-own ONNX RAVE model slot for choral timbre transfer.",
+      "sizeMb": 30,
+      "runtime": "ONNX Runtime Web",
+      "status": "bring-your-own",
+      "fallback": "Detuned choir oscillator bank"
+    },
+    {
+      "id": "neural-reverb",
+      "kind": "reverb",
+      "label": "Neural Reverb Slot",
+      "description": "Bring-your-own ONNX reverb slot for learned spaces.",
+      "sizeMb": 10,
+      "runtime": "ONNX Runtime Web",
+      "status": "bring-your-own",
+      "fallback": "Generated impossible impulse response"
+    }
+  ]
+}

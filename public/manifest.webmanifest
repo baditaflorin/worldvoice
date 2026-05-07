@@ -1,0 +1,17 @@
+{
+  "name": "WorldVoice",
+  "short_name": "WorldVoice",
+  "description": "Browser-native live audio transformer.",
+  "start_url": "/worldvoice/",
+  "scope": "/worldvoice/",
+  "display": "standalone",
+  "background_color": "#100f0d",
+  "theme_color": "#48d6c1",
+  "icons": [
+    {
+      "src": "/worldvoice/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
